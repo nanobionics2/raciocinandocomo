@@ -981,14 +981,30 @@
                 </select>
               </div>
               <div>
-                <label class="text-xs text-white/65">Qual nível você quer?</label>
-                <select id="fLevel" required class="mt-2 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none focus:border-sky-400/60">
-                  <option value="" disabled selected>Selecione</option>
-                  <option>Start</option>
-                  <option>Autonomia Intelectual e Material</option>
-                  <option>Fundadores</option>
-                  <option>Quero recomendação</option>
-                </select>
+                <label class="text-xs text-white/65">Qual plano você quer?</label>
+<select id="fLevel" required class="mt-2 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none focus:border-sky-400/60">
+  <option value="" disabled selected>Selecione</option>
+  <option>1 trilha — 6 meses</option>
+  <option>1 trilha — 12 meses</option>
+  <option>2 trilhas — 6 meses</option>
+  <option>2 trilhas — 12 meses</option>
+  <option>Empreendedores Inovadores — 1 trilha — 6 meses</option>
+  <option>Empreendedores Inovadores — 1 trilha — 12 meses</option>
+  <option>Empreendedores Inovadores — 2 trilhas — 6 meses</option>
+  <option>Empreendedores Inovadores — 2 trilhas — 12 meses</option>
+  <option>Quero recomendação</option>
+</select>
+                <div>
+  <label class="text-xs text-white/65">Qual trilha você quer?</label>
+  <select id="fTrack" required class="mt-2 w-full px-4 py-3 rounded-2xl bg-black/20 border border-white/10 outline-none focus:border-sky-400/60">
+    <option value="" disabled selected>Selecione</option>
+    <option>Raciocinando como Médico</option>
+    <option>Raciocinando como Engenheiro</option>
+    <option>Raciocinando como Economista e Administrador</option>
+    <option>Quero combinar 2 trilhas</option>
+    <option>Quero recomendação</option>
+  </select>
+</div>
               </div>
             </div>
 
@@ -1232,17 +1248,18 @@ Pode me enviar: ementa completa, trilhas por perfil e explicação dos planos (S
       const msgBox = $("#formMsg");
 
       function readData(){
-        return {
-          name: $("#fName").value.trim(),
-          age: $("#fAge").value.trim(),
-          email: $("#fEmail").value.trim(),
-          whatsapp: $("#fWhats").value.trim(),
-          profile: $("#fProfile").value,
-          level: $("#fLevel").value,
-          goal: $("#fGoal").value.trim(),
-          context: $("#fContext").value.trim(),
-        };
-      }
+  return {
+    name: $("#fName").value.trim(),
+    age: $("#fAge").value.trim(),
+    email: $("#fEmail").value.trim(),
+    whatsapp: $("#fWhats").value.trim(),
+    profile: $("#fProfile").value,
+    level: $("#fLevel").value,
+    track: $("#fTrack").value,
+    goal: $("#fGoal").value.trim(),
+    context: $("#fContext").value.trim(),
+  };
+}
 
       function validate(d){
         const errs = [];
@@ -1251,31 +1268,33 @@ Pode me enviar: ementa completa, trilhas por perfil e explicação dos planos (S
         if(!d.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) errs.push("E-mail");
         if(onlyDigits(d.whatsapp).length < 10) errs.push("WhatsApp");
         if(!d.profile) errs.push("Perfil");
-        if(!d.level) errs.push("Nível");
+        if(!d.level) errs.push("Plano");
+if(!d.track) errs.push("Trilha");
         if(!d.goal || d.goal.length < 20) errs.push("Objetivo (mín. 20 caracteres)");
         if(!d.context || d.context.length < 20) errs.push("Contexto (mín. 20 caracteres)");
         return errs;
       }
 
       function buildMessage(d){
-        const lines = [];
-        lines.push(`Olá! Quero aplicar para *${CONFIG.programName}*.`);
-        lines.push(`Escolha/Preferência: *${d.level}* (se precisar, quero recomendação).`);
-        lines.push("");
-        lines.push("*Resumo do perfil:*");
-        lines.push(`• Nome: ${d.name} | Idade: ${d.age}`);
-        lines.push(`• Perfil: ${d.profile}`);
-        lines.push(`• WhatsApp: ${d.whatsapp} | E-mail: ${d.email}`);
-        lines.push("");
-        lines.push("*Objetivo:*");
-        lines.push(d.goal);
-        lines.push("");
-        lines.push("*Contexto atual:*");
-        lines.push(d.context);
-        lines.push("");
-        lines.push("Pode me enviar: ementa completa, trilha recomendada e próximos passos do ciclo?");
-        return lines.join("\n");
-      }
+  const lines = [];
+  lines.push(`Olá! Quero aplicar para *${CONFIG.programName}*.`);
+  lines.push(`Plano desejado: *${d.level}*`);
+  lines.push(`Trilha desejada: *${d.track}*`);
+  lines.push("");
+  lines.push("*Resumo do perfil:*");
+  lines.push(`• Nome: ${d.name} | Idade: ${d.age}`);
+  lines.push(`• Perfil: ${d.profile}`);
+  lines.push(`• WhatsApp: ${d.whatsapp} | E-mail: ${d.email}`);
+  lines.push("");
+  lines.push("*Objetivo:*");
+  lines.push(d.goal);
+  lines.push("");
+  lines.push("*Contexto atual:*");
+  lines.push(d.context);
+  lines.push("");
+  lines.push("Pode me enviar a ementa completa, a melhor combinação de trilhas e os próximos passos?");
+  return lines.join("\n");
+}
 
       form.addEventListener("submit", (e)=>{
         e.preventDefault();
